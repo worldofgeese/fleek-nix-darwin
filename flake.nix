@@ -4,10 +4,10 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
     # Home manager
-    home-manager.url = "https://flakehub.com/f/nix-community/home-manager/0.1.tar.gz";
+    home-manager.url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # Fleek

@@ -20,8 +20,19 @@
   # programs are installed and configuration applied to dotfiles
   home.packages = [
     # user selected packages
-    pkgs.helix
+    pkgs.jetbrains.writerside
+    pkgs.mono
+    pkgs.gimp
     pkgs.alejandra
+    pkgs.headsetcontrol
+    pkgs.texlive.combined.scheme-small
+    pkgs.odo
+    pkgs.aws-sam-cli
+    pkgs.saml2aws
+    pkgs.exercism
+    # pkgs.eksctl
+    pkgs.kubernetes-helm
+    pkgs.fluxcd
     # Fleek Bling
     pkgs.git
     pkgs.htop
