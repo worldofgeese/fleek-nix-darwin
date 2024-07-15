@@ -22,8 +22,8 @@
     };
 
     signing = {
+      signByDefault = true;
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAbIQYGvgicAePeJgXJY2wTFMjna8zHSIfqppFB0edOV";
-      signByDefault = builtins.stringLength "" > 0;
     };
 
     lfs.enable = true;

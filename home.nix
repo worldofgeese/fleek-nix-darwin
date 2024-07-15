@@ -27,9 +27,10 @@
     pkgs.headsetcontrol
     pkgs.texlive.combined.scheme-small
     pkgs.odo
-    pkgs.aws-sam-cli
+    # pkgs.aws-sam-cli
     pkgs.saml2aws
     pkgs.exercism
+    pkgs.bun
     # pkgs.eksctl
     pkgs.kubernetes-helm
     pkgs.fluxcd

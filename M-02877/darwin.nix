@@ -61,6 +61,7 @@
     masApps = {
       "Microsoft Outlook" = 985367838;
       "Microsoft To Do" = 1274495053;
+      "Flow" = 1423210932;
     };
     enable = true;
     global.autoUpdate = true;
@@ -92,6 +93,8 @@
       "background-music"
       "secretive"
       "aerospace"
+      "cursor"
+      "chatgpt"
     ];
 
     taps = [
