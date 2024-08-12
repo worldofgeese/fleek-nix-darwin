@@ -125,3 +125,14 @@ Since Nix is largely self-contained, uninstalling and reverting to your old conf
 - You may receive the error, `bash: /home/USERNAME/.nix-profile/bin/starship: No such file or directory` on first run of `nix run nix-darwin -- switch --flake ~/.config/fleek` or `nix run home-manager/master -- init --switch ~/.config/fleek`. 
 
   Refer to [bug: starship wrong path if use-xdg-base-directories = true is set](https://github.com/nix-community/home-manager/issues/4807#issuecomment-1988625268) to resolve.
+
+- Rarely, you may encounter the error
+
+  ```console
+error:
+       … while fetching the input 'git+file:///Users/dktaohan/.local/share/fleek'
+
+       error: getting working directory status: invalid data in index - calculated checksum does not match expected
+``` 
+
+Run `cd ~/.local/share/fleek; git config --local index.skipHash false; git reset --mixed` to correct. There are a variety of reasons for this error to occur, some of which you may find in [this Nix user Discourse post](https://discourse.nixos.org/t/invalid-data-in-git-index-while-nix-flaek-update).
