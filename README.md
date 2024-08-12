@@ -82,8 +82,8 @@ Open a new terminal window to test your changes and enjoy the fruits of your lab
 
 ```bash
 # To update your packages
-$ nix flake update ~/.config/fleek
-# To apply the configuration
+$ nix flake update --flake ~/.config/fleek
+# To update your machine with any changes
 $ nix run nix-darwin -- switch --flake ~/.config/fleek
 ```
 
@@ -92,8 +92,9 @@ $ nix run nix-darwin -- switch --flake ~/.config/fleek
 ```bash
 # For brand new machines, initialize Home Manager
 $ `nix run home-manager/master -- init --switch ~/.config/fleek` 
-# To update your machine with any changes 
-# or upgrade your packages to latest
+# To update your packages
+$ nix flake update --flake ~/.config/fleek
+# To update your machine with any changes
 $ `nix run home-manager/master -- --switch`.
 ```
 
