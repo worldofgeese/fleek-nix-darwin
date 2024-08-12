@@ -98,6 +98,14 @@ $ nix flake update --flake ~/.config/fleek
 $ `nix run home-manager/master -- --switch`.
 ```
 
+## Quality-of-life improvements
+
+You're all set to run and enjoy Nix and Home Manager. If you'd like to improve your experience, the below one-liner prompts for a GitHub personal access token, uses it for fetch operations so you're not rate-limited, and finally turns off the "warning: Git tree '~/local/share/fleek' is dirty" you're likely to see.
+
+```
+echo -n "Enter your GitHub key (get one at https://github.com/settings/tokens): " && read github_key && printf "experimental-features = nix-command flakes auto-allocate-uids\naccess-tokens = github.com=$github_key\nfallback = true\nwarn-dirty = false\nauto-optimise-store = true" > nix.conf
+```
+
 ## Uninstall
 
 Since Nix is largely self-contained, uninstalling and reverting to your old configuration is easy! (Thank you, Aram, for these instructions.)
