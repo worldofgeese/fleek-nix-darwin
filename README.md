@@ -128,11 +128,11 @@ Since Nix is largely self-contained, uninstalling and reverting to your old conf
 
 - Rarely, you may encounter the error
 
-```console
-error:
-       … while fetching the input 'git+file:///Users/dktaohan/.local/share/fleek'
+    ```console
+    error:
+           … while fetching the input 'git+file:///Users/dktaohan/.local/share/fleek'
 
-       error: getting working directory status: invalid data in index - calculated checksum does not match expected
-``` 
+           error: getting working directory status: invalid data in index - calculated checksum does not match expected
+    ``` 
 
-Run `cd ~/.local/share/fleek; git config --local index.skipHash false; git reset --mixed` to correct. There are a variety of reasons for this error to occur, some of which you may find in [this Nix user Discourse post](https://discourse.nixos.org/t/invalid-data-in-git-index-while-nix-flaek-update).
+    Run `cd ~/.local/share/fleek; git config --local index.skipHash false; git reset --mixed` to correct. There are a variety of reasons for this error to occur, some of which you may find in [this Nix user Discourse post](https://discourse.nixos.org/t/invalid-data-in-git-index-while-nix-flaek-update).
