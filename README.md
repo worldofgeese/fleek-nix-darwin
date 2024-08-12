@@ -128,7 +128,7 @@ Since Nix is largely self-contained, uninstalling and reverting to your old conf
 
 - Rarely, you may encounter the error
 
-  ```console
+```console
 error:
        … while fetching the input 'git+file:///Users/dktaohan/.local/share/fleek'
 
