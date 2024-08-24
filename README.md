@@ -32,7 +32,7 @@ Create the file `darwin.nix` in the generated path at `~/.config/fleek` under yo
 }
 ```
 
-Now we will configure `nix-darwin` to support Fleek/Home Manager. Open `~/.config/fleek/flake.nix`. Above the `homeConfigurations` block, insert the following:
+Now we will configure `nix-darwin` to support Fleek/Home Manager. Open `~/.config/fleek/flake.nix`. Replace the `homeConfigurations` block with the following:
 
 ```nix
     darwinConfigurations."your-hostname" = darwin.lib.darwinSystem {
@@ -116,9 +116,32 @@ printf "%s\n" "experimental-features = nix-command flakes auto-allocate-uids" \
 
 Since Nix is largely self-contained, uninstalling and reverting to your old configuration is easy! (Thank you, Aram, for these instructions.)
 
-1. Run `/nix/nix-installer uninstall`.
-2. Restore `.bashrc.bak` to `.bashrc`.
-3. Restore `.profile.bak` to `.profile.`
+If on macOS, first uninstall nix-darwin:
+
+```sh
+`nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller`.
+```
+
+On Windows, uninstall Home Manager:
+
+```sh
+home-manager uninstall
+```
+
+- Uninstall Nix itself
+  ```sh
+  nix/nix-installer uninstall
+  ```
+
+  If you're on macOS and you
+  ```console
+  The volume "Nix Store" on disk3s7 couldn't be unmounted because it is in use by process $x`
+  ```
+
+  Run `sudo diskutil unmountDisk force /nix && sudo diskutil apfs deleteVolume "Nix Store"`
+
+- Restore `.bashrc.bak` to `.bashrc`.
+- Restore `.profile.bak` to `.profile.`
 
 ## Troubleshooting
 
