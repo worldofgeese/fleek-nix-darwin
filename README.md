@@ -133,7 +133,7 @@ home-manager uninstall
   nix/nix-installer uninstall
   ```
 
-  If you're on macOS and you
+  If you're on macOS and you receive the error:
   ```console
   The volume "Nix Store" on disk3s7 couldn't be unmounted because it is in use by process $x`
   ```
