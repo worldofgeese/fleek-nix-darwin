@@ -22,6 +22,7 @@
   # installs a version of nix, that dosen't need "experimental-features = nix-command flakes" in /etc/nix/nix.conf
   security.pam.enableSudoTouchIdAuth = true;
   system = {
+    stateVersion = 5;
     defaults = {
       CustomUserPreferences = {
         # Avoid creating .DS_Store files on network or USB volumes
@@ -54,6 +55,9 @@
     echo "Reduce Menu Bar padding"
     defaults write -globalDomain NSStatusItemSelectionPadding -int 6
     defaults write -globalDomain NSStatusItemSpacing -int 12
+
+    echo "Disable the Power Chime sound when plugging in a MacBook"
+    defaults write com.apple.PowerChime ChimeOnNoHardware -bool true ;killall PowerChime
   '';
   # Enables TouchID for sudo operations
   homebrew = {
@@ -72,6 +76,8 @@
     # updates homebrew packages on activation,
     # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
     brews = [
+      "podman"
+      "aws-nuke"
     ];
     casks = [
       "jordanbaird-ice"
@@ -85,7 +91,6 @@
       "notunes"
       "fork"
       "keycastr"
-      "docker"
       "devpod"
       "dotnet-sdk"
       "adobe-acrobat-reader"
@@ -95,6 +100,7 @@
       "aerospace"
       "cursor"
       "chatgpt"
+      "podman-desktop"
     ];
 
     taps = [

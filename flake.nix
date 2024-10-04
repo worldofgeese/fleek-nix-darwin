@@ -8,7 +8,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # Fleek
-    fleek.url = "https://flakehub.com/f/ublue-os/fleek/*.tar.gz";
+    # fleek.url = "https://flakehub.com/f/ublue-os/fleek/*.tar.gz";
+
 
     # Overlays
     darwin.url = "github:lnl7/nix-darwin";
@@ -19,7 +20,7 @@
     self,
     nixpkgs,
     home-manager,
-    fleek,
+    # fleek,
     darwin,
     ...
   } @ inputs: {

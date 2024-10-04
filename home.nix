@@ -34,6 +34,15 @@
     # pkgs.eksctl
     pkgs.kubernetes-helm
     pkgs.fluxcd
+    pkgs.topgrade
+    pkgs.docker-compose
+    pkgs.podman-compose
+    pkgs.devcontainer
+    pkgs.devpod
+    pkgs.kubectl
+    pkgs.helm-dashboard
+    # pkgs.podman-desktop ## broken on aarch64
+    # pkgs.zed-editor ## broken on aarch64
     # Fleek Bling
     pkgs.git
     pkgs.htop
