@@ -1,7 +1,4 @@
 {
-  # DO NOT EDIT: This file is managed by fleek. Manual changes will be overwritten.
-  description = "Fleek Configuration";
-
   inputs = {
     # Nixpkgs
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
