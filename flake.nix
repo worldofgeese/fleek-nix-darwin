@@ -76,8 +76,8 @@
         ];
       };
       
-      # Add Linux configuration for your current user
-      "user@linux" = home-manager.lib.homeManagerConfiguration {
+      # Adding configuration that matches the default home-manager expectation
+      "user" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {inherit inputs;};
         modules = [
@@ -98,6 +98,7 @@
           }
         ];
       };
+      
     };
   };
 }
