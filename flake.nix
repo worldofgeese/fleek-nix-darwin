@@ -24,6 +24,7 @@
     ...
   } @ inputs: {
     packages.aarch64-darwin.fleek = fleek.packages.aarch64-darwin.default;
+    packages.x86_64-linux.fleek = fleek.packages.x86_64-linux.default;
 
     # Available through 'home-manager --flake .#your-username@your-hostname'
 
@@ -67,6 +68,29 @@
           {
             home.packages = [
               fleek.packages.aarch64-darwin.default
+            ];
+          }
+          {
+            nixpkgs.overlays = [];
+          }
+        ];
+      };
+      
+      # Add Linux configuration for your current user
+      "user@linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {inherit inputs;};
+        modules = [
+          ./home.nix
+          ./path.nix
+          ./shell.nix
+          ./user.nix
+          ./aliases.nix
+          ./programs.nix
+          # self-manage fleek
+          {
+            home.packages = [
+              fleek.packages.x86_64-linux.default
             ];
           }
           {
