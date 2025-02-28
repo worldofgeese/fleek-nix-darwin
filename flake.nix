@@ -89,6 +89,8 @@
           ./programs.nix
           # self-manage fleek
           {
+            home.username = "user";
+            home.homeDirectory = "/home/user/";
             home.packages = [
               fleek.packages.x86_64-linux.default
             ];

@@ -50,7 +50,8 @@
     pkgs.btop
     pkgs.cheat
     pkgs.just
-    (pkgs.nerdfonts.override {fonts = ["FiraCode"];})
+    pkgs.nerd-fonts._0xproto
+    pkgs.nerd-fonts.droid-sans-mono
   ];
   fonts.fontconfig.enable = true;
   home.stateVersion = "22.11"; # To figure this out (in-case it changes) you can comment out the line and see what version it expected.
