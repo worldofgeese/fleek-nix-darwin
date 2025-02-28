@@ -181,7 +181,7 @@ home-manager uninstall
 
 - Uninstall Nix itself
   ```sh
-  nix/nix-installer uninstall
+  /nix/lix-installer uninstall
   ```
 
   If you're on macOS and you receive the error:
