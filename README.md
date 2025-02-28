@@ -10,9 +10,9 @@ This repository contains a declarative specification of tools, settings, and fil
 
 ## Getting started
 
-1. Install Lix (a user-friendly Nix fork):
+1. Install Lix (a Nix fork with niceties):
    ```bash
-   curl -L https://nixos.org/nix/install | sh
+   curl -sSf -L https://install.lix.systems/lix | sh -s -- install
    ```
 
 2. Clone this repo to `~/.config/fleek`
