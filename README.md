@@ -15,7 +15,7 @@ This repository contains a declarative specification of tools, settings, and fil
    curl -sSf -L https://install.lix.systems/lix | sh -s -- install
    ```
 
-2. Clone this repo to `~/.config/fleek`
+2. Clone this repo to `~/.config/fleek` (hint: you can use `nix-shell -p gitMinimal gh` for an ad-hoc shell with Git and `gh` installed)
 
 3. Modify this opinionated configuration by following the guides for macOS and WSL/Linux below.
 
