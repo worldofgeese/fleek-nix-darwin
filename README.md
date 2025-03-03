@@ -141,7 +141,7 @@ $ nix run nix-darwin -- switch --flake ~/.config/fleek
 # To update your packages
 $ nix flake update --flake ~/.config/fleek
 # To update your machine with any changes
-$ `nix run home-manager/master -- --switch`.
+$ nix run home-manager/master -- switch --flake ~/.config/fleek
 ```
 
 ## Quality-of-life improvements
