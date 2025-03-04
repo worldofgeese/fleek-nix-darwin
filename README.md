@@ -15,21 +15,21 @@ This repository contains a declarative specification of tools, settings, and fil
    curl -sSf -L https://install.lix.systems/lix | sh -s -- install
    ```
 
-2. Clone this repo to `~/.config/fleek` (hint: you can use `nix-shell -p gitMinimal gh` for an ad-hoc shell with Git and `gh` installed)
+2. Clone this repo to `~/.config/home-manager` (hint: you can use `nix-shell -p gitMinimal gh` for an ad-hoc shell with Git and `gh` installed)
 
 3. Modify this opinionated configuration by following the guides for macOS and WSL/Linux below.
 
 3. Update your packages:
-`nix flake update ~/.config/fleek`
+`nix flake update --flake ~/.config/home-manager`
 
 4. Create your first Home Manager generation:
-`nix run home-manager/master -- init --switch ~/.config/fleek`
+`nix run home-manager/master -- init --switch`
 
 For help with any errors or bugs, refer to [Troubleshooting](#troubleshooting) or open an issue!
 
 ### Configuring `nix-darwin` for macOS users
 
-Create or edit the file `darwin.nix` in the generated path at `~/.config/fleek` under your machine name folder Fleek created. My machine name folder is M-02877 but it won't be yours. You can copy many of my settings, packages, and applications in my own `darwin.nix` file as you like. The important thing is you minimally include the following in your `darwin.nix` file:
+Create or edit the file `darwin.nix` in the  `~/.config/home-manager` under your machine name folder. My machine name folder is M-02877 but it won't be yours. You can copy many of my settings, packages, and applications in my own `darwin.nix` file as you like. The important thing is you minimally include the following in your `darwin.nix` file:
 
 ```nix
 {pkgs, ...}: {
@@ -39,7 +39,7 @@ Create or edit the file `darwin.nix` in the generated path at `~/.config/fleek` 
 }
 ```
 
-2. Configure nix-darwin to support Home Manager. Open `~/.config/fleek/flake.nix`. Modify or add the `darwinConfigurations` block:
+2. Configure nix-darwin to support Home Manager. Open `~/.config/home-manager/flake.nix`. Modify or add the `darwinConfigurations` block:
 
 ```nix
     darwinConfigurations."your-hostname" = darwin.lib.darwinSystem {
@@ -69,19 +69,19 @@ Create or edit the file `darwin.nix` in the generated path at `~/.config/fleek` 
 > Replace instances of your-username and your-hostname with your actual values. Find your hostname by running the hostname command.
 
 3. Apply your configuration:
-`nix run nix-darwin -- switch --flake ~/.config/fleek`
+`nix run nix-darwin -- switch --flake ~/.config/home-manager`
 
 4. Open a new terminal to test your changes.
 
 > [!WARNING]
-> Homebrew users: ensure "/opt/homebrew/bin" is added to `~/.config/fleek/path.nix`
+> Homebrew users: ensure "/opt/homebrew/bin" is added to `~/.config/home-manager/path.nix`
 > Look to my `darwin.nix` file for reference on installing brew packages. Be warned that my configuration assumes all Homebrew packages are managed by `nix-darwin`. Any unmanaged packages will be uninstalled unless you change `onActivation.cleanup = "zap";` to `onActivation.cleanup = "none"`.
 
 ## Configuring for WSL/Linux users
 
 For WSL or Linux, make sure to customize the configuration for your username and system:
 
-1. Open `~/.config/fleek/flake.nix`
+1. Open `~/.config/home-manager/flake.nix`
 2. Find the `homeConfigurations` section
 3. Add or modify an entry for your username:
 
@@ -114,8 +114,8 @@ For WSL or Linux, make sure to customize the configuration for your username and
 
 4. Update packages and apply your configuration:
 ```sh
-nix flake update ~/.config/fleek
-nix run home-manager/master -- switch --flake ~/.config/fleek#your-username
+nix flake update ~/.config/home-manager
+nix run home-manager/master -- switch --flake ~/.config/home-manager#your-username
 ```
 
 ## Reference
@@ -130,7 +130,7 @@ nix run home-manager/master -- switch --flake ~/.config/fleek#your-username
 
 ```bash
 # To update your packages
-$ nix flake update --flake ~/.config/fleek
+$ nix flake update --flake ~/.config/home-manager
 # To update your machine with any changes
 $ nix run nix-darwin -- switch --flake ~/.config/fleek
 ```
@@ -139,9 +139,9 @@ $ nix run nix-darwin -- switch --flake ~/.config/fleek
 
 ```bash
 # To update your packages
-$ nix flake update --flake ~/.config/fleek
+$ nix flake update --flake ~/.config/home-manager
 # To update your machine with any changes
-$ nix run home-manager/master -- switch --flake ~/.config/fleek
+$ nix run home-manager/master -- switch
 ```
 
 ## Quality-of-life improvements
@@ -205,7 +205,7 @@ home-manager uninstall
 
 - *Index error*: If you encounter:
   ```console
-  error: ... while fetching the input 'git+file:///Users/username/.local/share/fleek'
+  error: ... while fetching the input 'git+file:///Users/username/.config/home-manager'
   error: getting working directory status: invalid data in index - calculated checksum does not match expected
   ```
 
@@ -222,12 +222,12 @@ home-manager uninstall
 `error: NAR hash mismatch in input 'https://github.com/nix-community/home-manager/archive/master.tar.gz?narHash=sha256-...'`
   
   Update your flake:
-  `nix flake update ~/.config/fleek`
+  `nix flake update --flake ~/.config/home-manager`
 
 - *Activation package error*:
-  `error: flake 'git+file:///home/user/.config/fleek' does not provide attribute 'packages.x86_64-linux.homeConfigurations."user".activationPackage'...`
+  `error: flake 'git+file:///home/user/.config/home-manager' does not provide attribute 'packages.x86_64-linux.homeConfigurations."user".activationPackage'...`
   
-  This typically happens when using the default configuration without replacing the username and hostname. Edit your `~/.config/fleek/flake.nix` to include your username in the `homeConfigurations` section.
+  This typically happens when using the default configuration without replacing the username and hostname. Edit your `~/.config/home-manager/flake.nix` to include your username in the `homeConfigurations` section.
   
 - *Starship error*: If you see
   `bash: /home/USERNAME/.nix-profile/bin/starship: No such file or directory`
