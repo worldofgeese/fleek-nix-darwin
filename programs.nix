@@ -20,9 +20,9 @@
   programs.awscli.enable = true;
   programs.lf.enable = true;
   programs.topgrade.enable = true;
-  programs.wezterm.enable = true;
   programs.yt-dlp.enable = true;
   programs.k9s.enable = true;
+  #programs.vscode.enable = true;
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";

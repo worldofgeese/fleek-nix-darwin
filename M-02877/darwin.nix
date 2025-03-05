@@ -1,4 +1,11 @@
 {pkgs, ...}: {
+  nixpkgs.hostPlatform = {
+    config = "aarch64-apple-darwin";
+    system = "aarch64-darwin";
+  };
+  nixpkgs.config.allowUnfree = true;
+  users.users."dktaohan".home = "/Users/dktaohan"; # Set to $USER. This is required to avoid an error when using nix-darwin with Home Manager
+  # https://github.com/nix-community/home-manager/issues/4026
   # if you use zsh (the default on new macOS installations),
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
   programs.zsh = {
@@ -9,19 +16,12 @@
       eval "$(eksctl completion zsh)"
     '';
   };
-  users.users."dktaohan".home = "/Users/dktaohan"; # Set to $USER. This is required to avoid an error when using nix-darwin with Home Manager
-  # https://github.com/nix-community/home-manager/issues/4026
-  # allow packages with non-free licenses, like VS Code, to be installed
-  nixpkgs.config.allowUnfree = true;
-  nix = {
-    useDaemon = true;
-    # Use the latest version of Nix
-    # https://github.com/LnL7/nix-darwin/issues/931
-    package = pkgs.nixVersions.latest;
-  };
-  # installs a version of nix, that dosen't need "experimental-features = nix-command flakes" in /etc/nix/nix.conf
-  security.pam.enableSudoTouchIdAuth = true;
+
+  # Enables TouchID for sudo operations
+  security.pam.services.sudo_local.touchIdAuth = true;
   system = {
+    # Used for backwards compatibility, please read the changelog before changing.
+    # $ darwin-rebuild changelog
     stateVersion = 5;
     defaults = {
       CustomUserPreferences = {
@@ -40,26 +40,25 @@
     };
   };
   # Settings that don't have an option in nix-darwin
-  system.activationScripts.postActivation.text = ''
-    echo "Allow apps from anywhere"
-    SPCTL=$(spctl --status)
-    if ! [ "$SPCTL" = "assessments disabled" ]; then
-        sudo spctl --master-disable
-    fi
-  '';
-  # User-level settings
-  system.activationScripts.postUserActivation.text = ''
-    echo "Show the ~/Library folder"
-    chflags nohidden ~/Library
-
-    echo "Reduce Menu Bar padding"
-    defaults write -globalDomain NSStatusItemSelectionPadding -int 6
-    defaults write -globalDomain NSStatusItemSpacing -int 12
-
-    echo "Disable the Power Chime sound when plugging in a MacBook"
-    defaults write com.apple.PowerChime ChimeOnNoHardware -bool true ;killall PowerChime
-  '';
-  # Enables TouchID for sudo operations
+  #  system.activationScripts.postActivation.text = ''
+  #    echo "Allow apps from anywhere"
+  #    SPCTL=$(spctl --status)
+  #    if ! [ "$SPCTL" = "assessments disabled" ]; then
+  #        sudo spctl --master-disable
+  #    fi
+  #  '';
+  #  # User-level settings
+  #  system.activationScripts.postUserActivation.text = ''
+  #    echo "Show the ~/Library folder"
+  #    chflags nohidden ~/Library
+  #
+  #    echo "Reduce Menu Bar padding"
+  #    defaults write -globalDomain NSStatusItemSelectionPadding -int 6
+  #    defaults write -globalDomain NSStatusItemSpacing -int 12
+  #
+  #    echo "Disable the Power Chime sound when plugging in a MacBook"
+  #    defaults write com.apple.PowerChime ChimeOnNoHardware -bool true ;killall PowerChime
+  #  '';
   homebrew = {
     # install apps from the Mac App Store
     masApps = {
@@ -78,6 +77,7 @@
     brews = [
       "podman"
       "aws-nuke"
+      "azure-cli"
     ];
     casks = [
       "jordanbaird-ice"
@@ -86,7 +86,6 @@
       "loop"
       "neardrop"
       "raycast"
-      "warp"
       "logseq"
       "notunes"
       "fork"
@@ -100,7 +99,7 @@
       "aerospace"
       "cursor"
       "chatgpt"
-      "podman-desktop"
+      "visual-studio-code"
     ];
 
     taps = [

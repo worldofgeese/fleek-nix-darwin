@@ -7,21 +7,22 @@
     home-manager.url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Fleek
-    # fleek.url = "https://flakehub.com/f/ublue-os/fleek/*.tar.gz";
-
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Overlays
     darwin.url = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
-    # fleek,
     darwin,
+    lix-module,
     ...
   } @ inputs: {
     packages.aarch64-darwin.fleek = fleek.packages.aarch64-darwin.default;
@@ -34,9 +35,8 @@
       modules = [
         ./M-02877/darwin.nix
         home-manager.darwinModules.home-manager
+        lix-module.nixosModules.default
         {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
           home-manager.users.dktaohan.imports = [
             ./home.nix
             ./path.nix
