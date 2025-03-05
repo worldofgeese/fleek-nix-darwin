@@ -4,7 +4,6 @@
   misc,
   ...
 }: {
-  # DO NOT EDIT: This file is managed by fleek. Manual changes will be overwritten.
   nixpkgs = {
     # Configure your nixpkgs instance
     config = {
@@ -44,7 +43,6 @@
     pkgs.podman-desktop
     pkgs.zed-editor
     pkgs.warp-terminal
-    # Fleek Bling
     pkgs.git
     pkgs.htop
     pkgs.github-cli

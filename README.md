@@ -132,7 +132,7 @@ nix run home-manager/master -- switch --flake ~/.config/home-manager#your-userna
 # To update your packages
 $ nix flake update --flake ~/.config/home-manager
 # To update your machine with any changes
-$ nix run nix-darwin -- switch --flake ~/.config/fleek
+$ nix run nix-darwin -- switch --flake ~/.config/home-manager
 ```
 
 ### Windows Subsystem for Linux/Linux
@@ -211,7 +211,7 @@ home-manager uninstall
 
   Run: 
   ```sh
-  cd ~/.local/share/fleek
+  cd ~/.config/home-manager
   git config --local index.skipHash false
   git reset --mixed
   ```

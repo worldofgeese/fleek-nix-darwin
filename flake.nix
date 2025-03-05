@@ -25,9 +25,6 @@
     lix-module,
     ...
   } @ inputs: {
-    packages.aarch64-darwin.fleek = fleek.packages.aarch64-darwin.default;
-    packages.x86_64-linux.fleek = fleek.packages.x86_64-linux.default;
-
     # Available through 'home-manager --flake .#your-username@your-hostname'
 
     darwinConfigurations."M-02877" = darwin.lib.darwinSystem {
@@ -65,18 +62,12 @@
           # Host Specific configs
           ./M-02877/dktaohan.nix
           ./M-02877/custom.nix
-          # self-manage fleek
-          {
-            home.packages = [
-              fleek.packages.aarch64-darwin.default
-            ];
-          }
           {
             nixpkgs.overlays = [];
           }
         ];
       };
-      
+
       # Adding configuration that matches the default home-manager expectation
       "user" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
@@ -88,20 +79,15 @@
           ./user.nix
           ./aliases.nix
           ./programs.nix
-          # self-manage fleek
           {
             home.username = "user";
             home.homeDirectory = "/home/user/";
-            home.packages = [
-              fleek.packages.x86_64-linux.default
-            ];
           }
           {
             nixpkgs.overlays = [];
           }
         ];
       };
-      
     };
   };
 }

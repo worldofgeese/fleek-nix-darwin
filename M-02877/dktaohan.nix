@@ -3,7 +3,6 @@
   misc,
   ...
 }: {
-  # DO NOT EDIT: This file is managed by fleek. Manual changes will be overwritten.
   home.username = "dktaohan";
   home.homeDirectory = "/Users/dktaohan";
   programs.git = {

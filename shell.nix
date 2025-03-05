@@ -3,8 +3,6 @@
   misc,
   ...
 }: {
-  # DO NOT EDIT: This file is managed by fleek. Manual changes will be overwritten.
-
   programs.eza.extraOptions = [
     "--group-directories-first"
     "--header"
