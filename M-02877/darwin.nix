@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  nix.enable = false;
   nixpkgs.hostPlatform = {
     config = "aarch64-apple-darwin";
     system = "aarch64-darwin";
@@ -10,7 +11,11 @@
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    enableSyntaxHighlighting = true;
     interactiveShellInit = ''
+      autoload -Uz compinit && compinit
       eval "$(gh copilot alias -- zsh)"
       eval "$(saml2aws --completion-script-zsh)"
       eval "$(eksctl completion zsh)"
@@ -20,6 +25,7 @@
   # Enables TouchID for sudo operations
   security.pam.services.sudo_local.touchIdAuth = true;
   system = {
+    primaryUser = "dktaohan";
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
     stateVersion = 5;
@@ -100,6 +106,8 @@
       "cursor"
       "chatgpt"
       "visual-studio-code"
+      "visual-studio-code@insiders"
+      "monokle"
     ];
 
     taps = [

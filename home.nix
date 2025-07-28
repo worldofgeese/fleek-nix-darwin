@@ -19,8 +19,8 @@
   home.packages = [
     # user selected packages
     #pkgs.jetbrains.writerside
-    pkgs.mono
-    pkgs.gimp
+    # pkgs.mono
+    # pkgs.gimp
     pkgs.alejandra
     pkgs.headsetcontrol
     pkgs.texlive.combined.scheme-small
@@ -35,7 +35,7 @@
     pkgs.topgrade
     pkgs.docker-compose
     pkgs.podman-compose
-    pkgs.devcontainer
+    # pkgs.devcontainer
     pkgs.devpod
     pkgs.kubectl
     pkgs.helm-dashboard
@@ -60,6 +60,7 @@
     pkgs.nerd-fonts.fira-code
     pkgs.zotero
     pkgs.glab
+    # pkgs.keepassxc
   ];
   fonts.fontconfig.enable = true;
   home.stateVersion = "22.11"; # To figure this out (in-case it changes) you can comment out the line and see what version it expected.
