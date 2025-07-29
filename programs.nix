@@ -20,6 +20,7 @@
   programs.topgrade.enable = true;
   programs.yt-dlp.enable = true;
   programs.k9s.enable = true;
+  programs.wezterm.enable = true;
   #programs.vscode.enable = true;
   programs.ssh = {
     enable = true;

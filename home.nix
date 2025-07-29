@@ -42,7 +42,6 @@
     pkgs.vale ## prose linter
     pkgs.podman-desktop
     pkgs.zed-editor
-    pkgs.warp-terminal
     pkgs.git
     pkgs.htop
     pkgs.github-cli
