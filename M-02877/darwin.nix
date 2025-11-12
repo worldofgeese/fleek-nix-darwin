@@ -108,6 +108,7 @@
       "visual-studio-code"
       "visual-studio-code@insiders"
       "monokle"
+      "chatgpt-atlas"
     ];
 
     taps = [

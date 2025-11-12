@@ -28,14 +28,14 @@
     # pkgs.aws-sam-cli
     pkgs.saml2aws
     pkgs.exercism
-    # pkgs.bun
+    pkgs.bun
     # pkgs.eksctl
     pkgs.kubernetes-helm
     pkgs.fluxcd
     pkgs.topgrade
     pkgs.docker-compose
     pkgs.podman-compose
-    # pkgs.devcontainer
+    pkgs.devcontainer
     pkgs.devpod
     pkgs.kubectl
     pkgs.helm-dashboard
@@ -52,7 +52,7 @@
     pkgs.jq
     pkgs.yq-go
     pkgs.neovim
-    pkgs.neofetch
+    # pkgs.neofetch
     pkgs.btop
     pkgs.cheat
     pkgs.just
@@ -60,6 +60,8 @@
     pkgs.zotero
     pkgs.glab
     # pkgs.keepassxc
+    pkgs.pnpm
+    pkgs.nodejs
   ];
   fonts.fontconfig.enable = true;
   home.stateVersion = "22.11"; # To figure this out (in-case it changes) you can comment out the line and see what version it expected.

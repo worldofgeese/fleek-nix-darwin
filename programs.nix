@@ -24,14 +24,20 @@
   #programs.vscode.enable = true;
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    controlMaster = "auto";
-    controlPersist = "yes";
+    enableDefaultConfig = false;
     matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";
+        controlMaster = "auto";
+        controlPersist = "yes";
+      };
       "github.com" = {
         hostname = "github.com";
         user = "git";
         identityFile = "~/.ssh/my_ssh_key";
+        addKeysToAgent = "yes";
+        controlMaster = "auto";
+        controlPersist = "yes";
       };
     };
   };
