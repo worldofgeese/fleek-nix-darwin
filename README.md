@@ -105,9 +105,6 @@ For WSL or Linux, make sure to customize the configuration for your username and
     {
       home.packages = [];
     }
-    {
-      nixpkgs.overlays = [];
-    }
   ];
 };
 ```

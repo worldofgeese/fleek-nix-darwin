@@ -1,7 +1,7 @@
 {
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz";
 
     # Home manager
     home-manager.url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
@@ -62,9 +62,6 @@
           # Host Specific configs
           ./M-02877/dktaohan.nix
           ./M-02877/custom.nix
-          {
-            nixpkgs.overlays = [];
-          }
         ];
       };
 
@@ -82,9 +79,6 @@
           {
             home.username = "user";
             home.homeDirectory = "/home/user/";
-          }
-          {
-            nixpkgs.overlays = [];
           }
         ];
       };
