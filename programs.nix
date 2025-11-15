@@ -11,7 +11,7 @@
   programs.bat.enable = true;
   programs.atuin.enable = true;
   programs.zoxide.enable = true;
-  programs.direnv.enable = true;
+  programs.direnv.enable = false; # broken due to a bad fish build
   programs.starship.enable = true;
   # User specified programs
   programs.dircolors.enable = true;

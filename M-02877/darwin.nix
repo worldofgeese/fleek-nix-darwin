@@ -1,9 +1,5 @@
 {pkgs, ...}: {
   nix.enable = false;
-  nixpkgs.hostPlatform = {
-    config = "aarch64-apple-darwin";
-    system = "aarch64-darwin";
-  };
   nixpkgs.config.allowUnfree = true;
   users.users."dktaohan".home = "/Users/dktaohan"; # Set to $USER. This is required to avoid an error when using nix-darwin with Home Manager
   # https://github.com/nix-community/home-manager/issues/4026

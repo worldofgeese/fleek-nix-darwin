@@ -1,19 +1,14 @@
 {
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
-    home-manager.url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Overlays
-    darwin.url = "github:lnl7/nix-darwin";
+    darwin.url = "github:nix-darwin/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -22,7 +17,6 @@
     nixpkgs,
     home-manager,
     darwin,
-    lix-module,
     ...
   } @ inputs: {
     # Available through 'home-manager --flake .#your-username@your-hostname'
@@ -32,7 +26,20 @@
       modules = [
         ./M-02877/darwin.nix
         home-manager.darwinModules.home-manager
-        lix-module.nixosModules.default
+        ({pkgs, ...}: {
+          nixpkgs.overlays = [
+            (final: prev: {
+              inherit
+                (prev.lixPackageSets.latest)
+                nixpkgs-review
+                nix-eval-jobs
+                nix-fast-build
+                colmena
+                ;
+            })
+          ];
+          nix.package = pkgs.lixPackageSets.latest.lix;
+        })
         {
           home-manager.users.dktaohan.imports = [
             ./home.nix
