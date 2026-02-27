@@ -12,7 +12,6 @@
     enableSyntaxHighlighting = true;
     interactiveShellInit = ''
       autoload -Uz compinit && compinit
-      eval "$(gh copilot alias -- zsh)"
       eval "$(saml2aws --completion-script-zsh)"
       eval "$(eksctl completion zsh)"
     '';
@@ -80,6 +79,9 @@
       "podman"
       "aws-nuke"
       "azure-cli"
+      "pulumi"
+      "container"
+      "jira-cli"
     ];
     casks = [
       "jordanbaird-ice"
@@ -104,13 +106,15 @@
       "visual-studio-code"
       "visual-studio-code@insiders"
       "monokle"
-      "chatgpt-atlas"
+      "codex-app"
     ];
 
     taps = [
       "grishka/grishka"
       "mrkai77/cask"
       "nikitabobko/tap"
+      "pulumi/tap"
+      "ankitpokhrel/jira-cli"
     ];
   };
 }

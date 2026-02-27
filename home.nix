@@ -1,19 +1,10 @@
 {
   config,
   pkgs,
+  lib,
   misc,
   ...
 }: {
-  nixpkgs = {
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-      # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = _: true;
-    };
-  };
-
   # packages are just installed (no configuration applied)
   # programs are installed and configuration applied to dotfiles
   home.packages = [
@@ -35,7 +26,7 @@
     pkgs.topgrade
     pkgs.docker-compose
     pkgs.podman-compose
-    pkgs.devcontainer
+    # pkgs.devcontainer
     pkgs.devpod
     pkgs.kubectl
     pkgs.helm-dashboard
@@ -57,12 +48,18 @@
     pkgs.cheat
     pkgs.just
     pkgs.nerd-fonts.fira-code
-    pkgs.zotero
+    # pkgs.zotero
     pkgs.glab
     # pkgs.keepassxc
     pkgs.pnpm
     pkgs.nodejs
+    pkgs.claude-code-bin
+    pkgs.uv
+    pkgs.decapod
+    pkgs.alejandra
+    pkgs.tmux
   ];
+
   fonts.fontconfig.enable = true;
   home.stateVersion = "22.11"; # To figure this out (in-case it changes) you can comment out the line and see what version it expected.
   programs.home-manager.enable = true;

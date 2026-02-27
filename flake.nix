@@ -18,7 +18,42 @@
     home-manager,
     darwin,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    decapodOverlay = final: prev: {
+      decapod = final.rustPlatform.buildRustPackage {
+        pname = "decapod";
+        version = "0.42.1";
+
+        src = final.fetchCrate {
+          pname = "decapod";
+          version = "0.42.1";
+          hash = "sha256-v78OI6wniJP7XNsh2xCTRk0e3efocTjBwrr3WxzLpew=";
+        };
+
+        cargoHash = "sha256-YkjnlzkGJQfQkIWR5fR6qJ0YYlTwEWkUtpl7uqZ3KGw=";
+
+        doCheck = false;
+
+        nativeBuildInputs = [
+          final.pkg-config
+        ];
+
+        nativeCheckInputs = [
+          final.git
+        ];
+
+        buildInputs = [
+          final.sqlite
+        ];
+
+        meta = {
+          description = "Decapod CLI";
+          homepage = "https://crates.io/crates/decapod";
+          mainProgram = "decapod";
+        };
+      };
+    };
+  in {
     # Available through 'home-manager --flake .#your-username@your-hostname'
 
     darwinConfigurations."M-02877" = darwin.lib.darwinSystem {
@@ -27,6 +62,10 @@
         ./M-02877/darwin.nix
         home-manager.darwinModules.home-manager
         ({pkgs, ...}: {
+          nixpkgs.config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+          };
           nixpkgs.overlays = [
             (final: prev: {
               inherit
@@ -37,10 +76,13 @@
                 colmena
                 ;
             })
+            decapodOverlay
           ];
           nix.package = pkgs.lixPackageSets.latest.lix;
         })
         {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
           home-manager.users.dktaohan.imports = [
             ./home.nix
             ./path.nix
@@ -57,7 +99,14 @@
 
     homeConfigurations = {
       "dktaohan@M-02877" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+        pkgs = import nixpkgs {
+          system = "aarch64-darwin";
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+          };
+          overlays = [decapodOverlay];
+        }; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs;}; # Pass flake inputs to our config
         modules = [
           ./home.nix
@@ -74,7 +123,14 @@
 
       # Adding configuration that matches the default home-manager expectation
       "user" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+          };
+          overlays = [decapodOverlay];
+        };
         extraSpecialArgs = {inherit inputs;};
         modules = [
           ./home.nix
@@ -89,6 +145,34 @@
           }
         ];
       };
+    };
+
+    packages.aarch64-darwin = let
+      pkgs = import nixpkgs {
+        system = "aarch64-darwin";
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
+        overlays = [decapodOverlay];
+      };
+    in {
+      decapod = pkgs.decapod;
+      default = pkgs.decapod;
+    };
+
+    packages.x86_64-linux = let
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
+        overlays = [decapodOverlay];
+      };
+    in {
+      decapod = pkgs.decapod;
+      default = pkgs.decapod;
     };
   };
 }
