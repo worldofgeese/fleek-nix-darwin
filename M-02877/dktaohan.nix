@@ -1,10 +1,7 @@
 {
   pkgs,
-  misc,
   ...
 }: {
-  home.username = "dktaohan";
-  home.homeDirectory = "/Users/dktaohan";
   programs.git.enable = true;
   programs.git.ignores = [".direnv" "result"];
   programs.git.settings = {

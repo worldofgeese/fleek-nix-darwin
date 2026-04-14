@@ -1,10 +1,9 @@
 {
   pkgs,
-  misc,
   ...
 }: {
   home.shellAliases = {
-    "apply-M-02877" = "nix flake update --flake ~/.config/home-manager && nix run nix-darwin -- switch --flake ~/.config/home-manager && mas upgrade && brew upgrade";
+    "apply-M-02877" = "nix flake update --flake ~/.local/share/fleek && sudo -H darwin-rebuild switch --flake ~/.local/share/fleek";
     # bat --plain for unformatted cat
     catp = "bat -P";
 

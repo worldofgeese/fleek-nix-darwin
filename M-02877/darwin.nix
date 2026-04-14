@@ -1,7 +1,13 @@
-{pkgs, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  username,
+  ...
+}: {
   nix.enable = false;
   nixpkgs.config.allowUnfree = true;
-  users.users."dktaohan".home = "/Users/dktaohan"; # Set to $USER. This is required to avoid an error when using nix-darwin with Home Manager
+
   # https://github.com/nix-community/home-manager/issues/4026
   # if you use zsh (the default on new macOS installations),
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
@@ -17,10 +23,13 @@
     '';
   };
 
-  # Enables TouchID for sudo operations
+  # Enables TouchID for sudo operations (including inside tmux)
   security.pam.services.sudo_local.touchIdAuth = true;
+  security.pam.services.sudo_local.reattach = true;
+  security.sudo.extraConfig = ''
+    Defaults env_keep += "HOMEBREW_GITHUB_API_TOKEN"
+  '';
   system = {
-    primaryUser = "dktaohan";
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
     stateVersion = 5;
@@ -40,30 +49,18 @@
       };
     };
   };
-  # Settings that don't have an option in nix-darwin
-  #  system.activationScripts.postActivation.text = ''
-  #    echo "Allow apps from anywhere"
-  #    SPCTL=$(spctl --status)
-  #    if ! [ "$SPCTL" = "assessments disabled" ]; then
-  #        sudo spctl --master-disable
-  #    fi
-  #  '';
-  #  # User-level settings
-  #  system.activationScripts.postUserActivation.text = ''
-  #    echo "Show the ~/Library folder"
-  #    chflags nohidden ~/Library
-  #
-  #    echo "Reduce Menu Bar padding"
-  #    defaults write -globalDomain NSStatusItemSelectionPadding -int 6
-  #    defaults write -globalDomain NSStatusItemSpacing -int 12
-  #
-  #    echo "Disable the Power Chime sound when plugging in a MacBook"
-  #    defaults write com.apple.PowerChime ChimeOnNoHardware -bool true ;killall PowerChime
-  #  '';
+  system.activationScripts.preActivation.text = ''
+    if [ -z "''${HOMEBREW_GITHUB_API_TOKEN:-}" ]; then
+      if token="$(sudo --user=${lib.escapeShellArg config.homebrew.user} --set-home sh -lc 'cd ${../.} && ${pkgs.secretspec}/bin/secretspec get HOMEBREW_GITHUB_API_TOKEN' 2>/dev/null)"; then
+        export HOMEBREW_GITHUB_API_TOKEN="$token"
+      elif token="$(sudo --user=${lib.escapeShellArg config.homebrew.user} --set-home ${pkgs.github-cli}/bin/gh auth token 2>/dev/null)"; then
+        export HOMEBREW_GITHUB_API_TOKEN="$token"
+      fi
+    fi
+  '';
   homebrew = {
     # install apps from the Mac App Store
     masApps = {
-      "Microsoft Outlook" = 985367838;
       "Microsoft To Do" = 1274495053;
       "Flow" = 1423210932;
     };
@@ -73,8 +70,6 @@
     onActivation.upgrade = true;
     # remove all Homebrew packages and casks not managed by nix-darwin
     onActivation.cleanup = "zap";
-    # updates homebrew packages on activation,
-    # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
     brews = [
       "podman"
       "aws-nuke"
@@ -82,10 +77,12 @@
       "pulumi"
       "container"
       "jira-cli"
+      "lego/tap/bob-cli"
+      "lego/tap/mdc"
+      "swival/tap/swival"
     ];
     casks = [
       "jordanbaird-ice"
-      "battery"
       "alt-tab"
       "loop"
       "neardrop"
@@ -115,6 +112,11 @@
       "nikitabobko/tap"
       "pulumi/tap"
       "ankitpokhrel/jira-cli"
+      "swival/tap"
+      {
+        name = "lego/tap";
+        clone_target = "git@github.com:LEGO/homebrew-tap.git";
+      }
     ];
   };
 }

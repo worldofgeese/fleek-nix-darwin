@@ -53,50 +53,66 @@
         };
       };
     };
+
+    sharedOverlays = [
+      (final: prev: {
+        inherit
+          (prev.lixPackageSets.latest)
+          nixpkgs-review
+          nix-eval-jobs
+          nix-fast-build
+          colmena
+          ;
+      })
+      decapodOverlay
+    ];
+
+    # Helper to create a darwin system configuration.
+    # Team members: add your entry to darwinConfigurations below.
+    mkDarwin = {
+      hostname,
+      username,
+      system ? "aarch64-darwin",
+    }:
+      darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = {inherit username;};
+        modules = [
+          ./${hostname}/darwin.nix
+          home-manager.darwinModules.home-manager
+          ({pkgs, ...}: {
+            nixpkgs.config = {
+              allowUnfree = true;
+              allowUnfreePredicate = _: true;
+            };
+            nixpkgs.overlays = sharedOverlays;
+            nix.package = pkgs.lixPackageSets.latest.lix;
+            users.users.${username}.home = "/Users/${username}";
+            system.primaryUser = username;
+          })
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-backup";
+            home-manager.users.${username}.imports = [
+              ./home.nix
+              ./path.nix
+              ./shell.nix
+              ./user.nix
+              ./aliases.nix
+              ./programs.nix
+              ./${hostname}/${username}.nix
+              ./${hostname}/custom.nix
+            ];
+          }
+        ];
+      };
   in {
-    # Available through 'home-manager --flake .#your-username@your-hostname'
+    # --- macOS (nix-darwin) configurations ---
+    # Add your machine here: mkDarwin { hostname = "YOUR-HOSTNAME"; username = "your-user"; };
+    darwinConfigurations."M-02877" = mkDarwin {hostname = "M-02877"; username = "dktaohan";};
 
-    darwinConfigurations."M-02877" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-        ./M-02877/darwin.nix
-        home-manager.darwinModules.home-manager
-        ({pkgs, ...}: {
-          nixpkgs.config = {
-            allowUnfree = true;
-            allowUnfreePredicate = _: true;
-          };
-          nixpkgs.overlays = [
-            (final: prev: {
-              inherit
-                (prev.lixPackageSets.latest)
-                nixpkgs-review
-                nix-eval-jobs
-                nix-fast-build
-                colmena
-                ;
-            })
-            decapodOverlay
-          ];
-          nix.package = pkgs.lixPackageSets.latest.lix;
-        })
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.dktaohan.imports = [
-            ./home.nix
-            ./path.nix
-            ./shell.nix
-            ./user.nix
-            ./aliases.nix
-            ./programs.nix
-            ./M-02877/dktaohan.nix
-            ./M-02877/custom.nix
-          ];
-        }
-      ];
-    };
-
+    # --- Linux / WSL (home-manager standalone) configurations ---
     homeConfigurations = {
       "dktaohan@M-02877" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -106,8 +122,8 @@
             allowUnfreePredicate = _: true;
           };
           overlays = [decapodOverlay];
-        }; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs;}; # Pass flake inputs to our config
+        };
+        extraSpecialArgs = {inherit inputs;};
         modules = [
           ./home.nix
           ./path.nix
@@ -115,13 +131,11 @@
           ./user.nix
           ./aliases.nix
           ./programs.nix
-          # Host Specific configs
           ./M-02877/dktaohan.nix
           ./M-02877/custom.nix
         ];
       };
 
-      # Adding configuration that matches the default home-manager expectation
       "user" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = "x86_64-linux";
