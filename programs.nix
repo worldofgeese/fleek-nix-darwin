@@ -577,7 +577,11 @@
           "brew_formula"
           "brew_cask"
           "bun"
+          "bun_packages"
           "bob"
+          "helm"
+          "github_cli_extensions"
+          "rustup"
         ];
         cleanup = true;
         set_title = true;
