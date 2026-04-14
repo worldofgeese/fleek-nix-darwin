@@ -2,6 +2,17 @@
   pkgs,
   ...
 }: {
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      side-by-side = true;
+      line-numbers = true;
+      syntax-theme = "Dracula";
+      dark = true;
+    };
+  };
   programs.git.enable = true;
   programs.git.ignores = [".direnv" "result"];
   programs.git.settings = {

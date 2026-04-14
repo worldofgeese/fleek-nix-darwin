@@ -9,5 +9,11 @@
 
     # replace cat with bat
     cat = "bat";
+
+    # modern CLI replacements
+    du = "dust";
+    df = "duf";
+    ps = "procs";
+    find = "fd";
   };
 }

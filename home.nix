@@ -5,26 +5,37 @@
   ...
 }: {
   home.packages = [
+    # Nix tools
     pkgs.alejandra
     pkgs.nh
+
+    # Hardware
     pkgs.headsetcontrol
+
+    # Documents
     pkgs.texlive.combined.scheme-small
-    pkgs.odo
-    pkgs.saml2aws
-    pkgs.exercism
+    pkgs.vale
+
+    # Languages & runtimes
+    pkgs.nodejs
+    pkgs.pnpm
     pkgs.bun
+    pkgs.uv
+    pkgs.rustup
+
+    # Cloud & infra
+    pkgs.saml2aws
+    pkgs.kubectl
     pkgs.kubernetes-helm
+    pkgs.helm-dashboard
     pkgs.fluxcd
     pkgs.docker-compose
     pkgs.podman-compose
-    pkgs.devpod
-    pkgs.kubectl
-    pkgs.helm-dashboard
-    pkgs.vale
     pkgs.podman-desktop
-    pkgs.zed-editor
-    pkgs.htop
-    pkgs.github-cli
+    pkgs.devpod
+    pkgs.odo
+
+    # Dev tools
     pkgs.secretspec
     pkgs.glab
     pkgs.ripgrep
@@ -32,19 +43,34 @@
     pkgs.yq-go
     pkgs.cheat
     pkgs.just
-    pkgs.nerd-fonts.fira-code
-    pkgs.pnpm
-    pkgs.nodejs
-    pkgs.claude-code-bin
-    pkgs.uv
+    pkgs.zed-editor
+    pkgs.exercism
     pkgs.decapod
-    pkgs.rustup
+    pkgs.claude-code-bin
+
+    # Modern CLI replacements
+    pkgs.fd
+    pkgs.dust
+    pkgs.duf
+    pkgs.procs
+    pkgs.sd
+    pkgs.tokei
+    pkgs.bandwhich
+    pkgs.grex
+    pkgs.hyperfine
+
+    # Linting
+    pkgs.shellcheck
+
+    # Fonts
+    pkgs.nerd-fonts.fira-code
   ];
 
   home.sessionVariables = {
     EDITOR = "zed";
   };
 
+  xdg.enable = true;
   fonts.fontconfig.enable = true;
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
