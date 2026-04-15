@@ -79,7 +79,7 @@
       "jira-cli"
       "lego/tap/bob-cli"
       "lego/tap/mdc"
-      "swival/tap/swival"
+      # "swival/tap/swival" # FIXME: placeholder checksum in tap formula - re-enable once tap maintainers fix
     ];
     casks = [
       "jordanbaird-ice"
