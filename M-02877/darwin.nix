@@ -79,7 +79,7 @@
       "jira-cli"
       "lego/tap/bob-cli"
       "lego/tap/mdc"
-      # "swival/tap/swival" # FIXME: placeholder checksum in tap formula - re-enable once tap maintainers fix
+      # swival installed via: uv tool install swival
     ];
     casks = [
       "jordanbaird-ice"
@@ -112,7 +112,7 @@
       "nikitabobko/tap"
       "pulumi/tap"
       "ankitpokhrel/jira-cli"
-      "swival/tap"
+      # "swival/tap" # no longer needed - swival installed via uv
       {
         name = "lego/tap";
         clone_target = "git@github.com:LEGO/homebrew-tap.git";
