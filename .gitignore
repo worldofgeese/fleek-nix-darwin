@@ -3,3 +3,12 @@ result
 
 # Bob CLI session data
 .bob/
+
+# Claude Code per-directory settings (personal)
+.claude/
+
+# swival runtime state (history, locks)
+.swival/
+
+# nanoclaw runtime logs
+nanoclaw/

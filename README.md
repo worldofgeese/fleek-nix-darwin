@@ -134,6 +134,21 @@ nix flake update --flake ~/.local/share/fleek && sudo -H nix run nix-darwin -- s
 
 Open a new terminal to see your changes.
 
+### 6. First-time secrets setup
+
+The repo declares required secrets in [`secretspec.toml`](./secretspec.toml). Only the schema is in git — values live in your macOS Keychain. After the first apply (which installs `secretspec` onto your PATH), run:
+
+```bash
+secretspec config init                                    # pick "keyring" (macOS Keychain)
+cd ~/.local/share/fleek
+secretspec check                                          # lists missing required secrets
+secretspec set HOMEBREW_GITHUB_API_TOKEN                  # hidden prompt, stored in Keychain
+```
+
+Skipping this step is fine — the pre-activation script falls back to `gh auth token`, and without that, Homebrew just fetches unauthenticated (rate-limited).
+
+See https://secretspec.dev for more.
+
 ## Upgrading
 
 To upgrade everything (Nix packages, Homebrew, and all other package managers):
