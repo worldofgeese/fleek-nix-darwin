@@ -145,7 +145,9 @@ secretspec check                                          # lists missing requir
 secretspec set HOMEBREW_GITHUB_API_TOKEN                  # hidden prompt, stored in Keychain
 ```
 
-Skipping this step is fine — the pre-activation script falls back to `gh auth token`, and without that, Homebrew just fetches unauthenticated (rate-limited).
+**`HOMEBREW_GITHUB_API_TOKEN` is required** if you want the LEGO-internal Homebrew formulas (`lego/tap/bob-cli`, `lego/tap/mdc`). Homebrew uses it to fetch release assets from LEGO's private GitHub repos via the API — without it, those installs fail.
+
+The token needs `repo` scope and must belong to an account with access to the LEGO GitHub org. The pre-activation script tries three sources in order: `secretspec get` → `gh auth token` → nothing, so a `gh auth login` with the right account can substitute for the Keychain entry.
 
 See https://secretspec.dev for more.
 
