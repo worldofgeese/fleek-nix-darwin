@@ -78,7 +78,9 @@ cat > "$HOSTNAME/darwin.nix" << 'EOF'
   username,
   ...
 }: {
-  nix.enable = false;
+  # nix-darwin manages the Nix daemon + /etc/nix/nix.conf.
+  # Leave `nix.enable` at its default (true) so `lix-module.darwinModules.default`
+  # can pin Lix to the version from flake.nix.
   nixpkgs.config.allowUnfree = true;
 
   programs.zsh = {
@@ -149,8 +151,22 @@ nix flake update --flake ~/.local/share/fleek && sudo -H darwin-rebuild switch -
 There is also a shell alias for the above:
 
 ```bash
-apply-M-02877   # replace with your own alias if you add one
+fleek-apply     # hostname-agnostic; picks darwinConfigurations.$(hostname)
+apply-M-02877   # example of a host-specific alias
 ```
+
+### Upgrading Lix itself
+
+Lix comes from nixpkgs via `pkgs.lixPackageSets.latest.lix` (the path [recommended by upstream](https://lix.systems/add-to-config/) for stable releases). To move to a newer Lix, bump nixpkgs:
+
+```bash
+nix flake update nixpkgs --flake ~/.local/share/fleek
+fleek-apply
+```
+
+`nix --version` after the rebuild reflects whatever Lix release the new nixpkgs ships. **Don't** run `nix upgrade-nix` — it doesn't know about Lix's release channel.
+
+If you need a specific Lix version that's newer than what `nixos-unstable` has, switch `.latest` to `.git` (follows Lix main — requires compile) or `.lix_2_93` / `.lix_2_95` (pinned channels) in `flake.nix`. See https://lix.systems/add-to-config/.
 
 ## Quick start (WSL / Linux)
 
@@ -215,20 +231,19 @@ flake.nix                 # Flake inputs, mkDarwin helper, all system/user entri
 
 ## Quality-of-life improvements
 
-Suppress dirty tree warnings and enable useful Nix features:
+The flake's `mkDarwin` already declares these system-wide via `nix.settings`:
+
+- `experimental-features = nix-command flakes auto-allocate-uids`
+- `warn-dirty = false`
+- `auto-optimise-store = true`
+- `extra-platforms = []` (drops Rosetta's x86_64-darwin auto-detect; ARM-only fleet)
+
+No user-level `~/.config/nix/nix.conf` is needed for the above.
+
+Optionally add a GitHub token (keeps `nix flake update` from hitting API rate limits — stays user-level since it's per-user auth):
 
 ```bash
 mkdir -p ~/.config/nix
-cat > ~/.config/nix/nix.conf << 'EOF'
-experimental-features = nix-command flakes auto-allocate-uids
-warn-dirty = false
-auto-optimise-store = true
-EOF
-```
-
-Optionally add a GitHub token to avoid API rate limits:
-
-```bash
 echo "access-tokens = github.com=$(gh auth token)" >> ~/.config/nix/nix.conf
 ```
 
@@ -292,3 +307,30 @@ nix flake update --flake ~/.local/share/fleek
 ### Homebrew warning
 
 Ensure `/opt/homebrew/bin` is in `path.nix`. Note that `onActivation.cleanup = "zap"` will remove any Homebrew packages not declared in your `darwin.nix` -- change to `"none"` if you want to manage some packages manually.
+
+### `Unexpected files in /etc, aborting activation`
+
+On first apply after the Lix installer, nix-darwin refuses to overwrite the installer's `/etc/nix/nix.conf`. Move it aside and re-run:
+
+```bash
+sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+sudo -H darwin-rebuild switch --flake ~/.local/share/fleek
+```
+
+If `.before-nix-darwin` already exists from a prior attempt, use `.before-nix-darwin-2`, etc.
+
+### `experimental Lix feature 'nix-command' is disabled`
+
+Seen when bootstrapping via `sudo nix run nix-darwin ...` after the installer's `/etc/nix/nix.conf` has been moved aside (root's nix has no experimental-features set yet). Pass the flag inline for that one invocation:
+
+```bash
+sudo -H nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake ~/.local/share/fleek
+```
+
+Or just use `darwin-rebuild` directly if it's already on PATH:
+
+```bash
+sudo -H darwin-rebuild switch --flake ~/.local/share/fleek
+```
+
+After the first successful rebuild, nix-darwin writes its own `/etc/nix/nix.conf` with the needed features, and this goes away.

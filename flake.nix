@@ -10,6 +10,7 @@
     # Overlays
     darwin.url = "github:nix-darwin/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = {
@@ -86,7 +87,23 @@
               allowUnfreePredicate = _: true;
             };
             nixpkgs.overlays = sharedOverlays;
+            # Lix from nixpkgs (recommended path per https://lix.systems/add-to-config/).
+            # `.latest` tracks the most recent Lix release in the pinned nixpkgs;
+            # `nix flake update nixpkgs` moves to a newer Lix when nixpkgs ships one.
             nix.package = pkgs.lixPackageSets.latest.lix;
+            # We manage everything via flakes — disable the legacy channels machinery
+            # so NIX_PATH stops pointing at nonexistent /nix/var/nix/profiles/.../channels.
+            nix.channel.enable = false;
+            nix.settings = {
+              experimental-features = ["nix-command" "flakes" "auto-allocate-uids"];
+              # ARM-only fleet: drop Rosetta auto-detect's x86_64-darwin.
+              extra-platforms = [];
+              warn-dirty = false;
+              auto-optimise-store = true;
+              # Temporary: nixpkgs-unstable's lib uses `or` as an identifier, which
+              # Lix 2.95 flags as deprecated. Remove once nixpkgs upstream renames it.
+              extra-deprecated-features = ["or-as-identifier"];
+            };
             users.users.${username}.home = "/Users/${username}";
             system.primaryUser = username;
           })

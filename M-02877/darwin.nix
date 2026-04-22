@@ -5,7 +5,7 @@
   username,
   ...
 }: {
-  nix.enable = false;
+  nix.enable = true;
   nixpkgs.config.allowUnfree = true;
 
   # https://github.com/nix-community/home-manager/issues/4026
